@@ -27,8 +27,9 @@ const ScraperForm = ({ onScrape }) => {
           type="number"
           id="levels"
           value={levels}
-          onChange={(e) => setLevels(e.target.value)}
+          onChange={(e) => setLevels(Math.min(3, e.target.value))}
           min="1"
+          max="3"
           required
         />
       </div>

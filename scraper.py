@@ -2,12 +2,14 @@ import requests
 from bs4 import BeautifulSoup
 from database import save_data
 import os
+from urllib.parse import urlparse, urljoin
 
 def scrape_url(url, levels):
     scraped_data = []
     urls_to_scrape = [(url, 0)]
     scraped_urls = set()
-    max_levels = int(os.getenv('SCRAPING_LEVELS', levels))
+    max_levels = min(3, int(os.getenv('SCRAPING_LEVELS', levels)))
+    domain = urlparse(url).netloc
 
     while urls_to_scrape:
         current_url, current_level = urls_to_scrape.pop(0)
@@ -27,8 +29,8 @@ def scrape_url(url, levels):
 
         if current_level < max_levels:
             for link in soup.find_all('a', href=True):
-                next_url = link['href']
-                if next_url.startswith('http'):
+                next_url = urljoin(current_url, link['href'])
+                if urlparse(next_url).netloc == domain:
                     urls_to_scrape.append((next_url, current_level + 1))
 
     save_data(scraped_data)

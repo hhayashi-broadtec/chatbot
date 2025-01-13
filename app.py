@@ -10,7 +10,7 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 def input_url():
     data = request.get_json()
     url = data.get('url')
-    levels = data.get('levels')
+    levels = min(data.get('levels', 1), 3)  # Ensure levels do not exceed 3
     if not url or not levels:
         return jsonify({'error': 'URL and levels are required'}), 400
     scrape_url(url, levels)
