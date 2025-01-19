@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import ScraperForm from '../components/ScraperForm';
 import ScrapedData from '../components/ScrapedData';
+import ChatUI from '../components/ChatUI';
 
 const IndexPage = () => {
   const [scrapedData, setScrapedData] = useState([]);
@@ -23,6 +24,7 @@ const IndexPage = () => {
       <h1>Chatbot Scraper</h1>
       <ScraperForm onScrape={handleScrape} />
       <ScrapedData data={scrapedData} />
+      <ChatUI />
     </div>
   );
 };
